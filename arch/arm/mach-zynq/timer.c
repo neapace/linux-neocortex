@@ -444,6 +444,11 @@ static void __init xttcps_timer_init(struct device_node *timer)
 	zynq_ttc_setup_clocksource(clk_cs, timer_baseaddr);
 	zynq_ttc_setup_clockevent(clk_ce, timer_baseaddr + 4, irq);
 
+#ifdef CONFIG_IPIPE
+	if (num_possible_cpus() == 1)
+		pr_err("I-pipe: not supported on Zynq without SMP\n");
+#endif
+
 #ifdef CONFIG_HAVE_ARM_TWD
 	twd_local_timer_of_register();
 #endif
